@@ -14,6 +14,7 @@ public class DriverManager {
         switch (webDriverType.toUpperCase()){
             case"CHROME":
             driver = new ChromeDriver();
+
                 System.out.println("The Chrome Driver was initiated");
                 break;
             case"EDGE":
@@ -26,6 +27,9 @@ public class DriverManager {
 
 
         }
+
+        driver.manage().window().maximize();
+
     }
 
     public static DriverManager getInstance() {
