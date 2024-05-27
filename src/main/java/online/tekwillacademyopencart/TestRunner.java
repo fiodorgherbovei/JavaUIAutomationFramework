@@ -1,60 +1,41 @@
 package online.tekwillacademyopencart;
-
 import online.tekwillacademyopencart.managers.DataGeneratorManager;
 import online.tekwillacademyopencart.managers.DriverManager;
-import online.tekwillacademyopencart.managers.ScrollManager;
+import online.tekwillacademyopencart.pageobjects.AccountPage;
+import online.tekwillacademyopencart.pageobjects.RegisterPage;
+import online.tekwillacademyopencart.pageobjects.HomePage;
+import online.tekwillacademyopencart.pageobjects.LoginPage;
 import org.openqa.selenium.*;
 
 public class TestRunner {
     public static void main(String[] args) throws InterruptedException {
         WebDriver driver = DriverManager.getInstance().getDriver();
-
-        String currentTabName = driver.getWindowHandle();
-
-        driver.switchTo().newWindow(WindowType.TAB);
-
         driver.get("https://tekwillacademy-opencart.online/");
-        System.out.println("The current url is :" + driver.getCurrentUrl());
-        System.out.println("The current page title" + driver.getTitle());
+        HomePage homePage = new HomePage(driver);
+        homePage.navigateToRegisterPage();
 
-        WebElement userDropDownIcon = driver.findElement(By.xpath("//i[@class='fa-solid fa-user']"));
-        userDropDownIcon.click();
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.clickOnContinueButton();
+        String randomEmail = DataGeneratorManager.getRandomEmail();
+        registerPage.completeTheRegisterForm("Fedot","Talcovii",randomEmail,"tudorel123");
+        Thread.sleep(3000);
 
-        WebElement registerOption = driver.findElement(By.xpath("//a[normalize-space()='Register']"));
-        registerOption.click();
+        registerPage.enablePrivacyToggle();
+        registerPage.clickOnContinueButton();
 
-        System.out.println("The current url is :" + driver.getCurrentUrl());
-        System.out.println("The current page title" + driver.getTitle());
+        Thread.sleep(3000);
 
-        WebElement firsNameInput = driver.findElement(By.id("input-firstname"));
-        firsNameInput.sendKeys("Fiodor");
+        AccountPage accountPage = new AccountPage(driver);
+        accountPage.clickOnLogoutButton();
 
-        WebElement lastNameInput = driver.findElement(By.id("input-lastname"));
-        lastNameInput.sendKeys("Gherbovei");
+        homePage.navigateToLoginPage();
 
-        WebElement emailInput = driver.findElement(By.id("input-email"));
-        String emailData = DataGeneratorManager.getRandomEmail();
-        emailInput.sendKeys(emailData);
-        System.out.println("Email :" + emailData);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.completeTheLoginForm(randomEmail,"tudorel123");
+        loginPage.clickOnContinueButton();
 
-        WebElement passwordInput = driver.findElement(By.id("input-password"));
-        passwordInput.sendKeys("tudor123");
-
-        WebElement privacyToggle = driver.findElement(By.cssSelector("input[value='1'][name='agree']"));
-        ScrollManager.scrollToElement(privacyToggle);
-        privacyToggle.click();
-        Thread.sleep(4000);
-
-        WebElement continueButton = driver.findElement(By.cssSelector("button[type='submit']"));
-        continueButton.click();
-
-        System.out.println("The current url is :" + driver.getCurrentUrl());
-        System.out.println("The current page title" + driver.getTitle());
-
-
-
-
-
+        driver.quit();
+        System.out.println("The Test is finished and the driver is closed");
 
     }
 
