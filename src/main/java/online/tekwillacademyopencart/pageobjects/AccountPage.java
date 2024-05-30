@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import javax.print.DocFlavor;
+
 
 public class AccountPage extends Page{
     public AccountPage(WebDriver driver){
@@ -19,5 +21,9 @@ public class AccountPage extends Page{
         ScrollManager.scrollToElement(logOutButton);
         logOutButton.click();
         System.out.println(" The Logout Button was clicked");
+    }
+
+    public boolean isLogoutButtonDisplayed(){
+        return logOutButton.isDisplayed();
     }
 }

@@ -45,4 +45,11 @@ public class DriverManager {
         }
         return driver;
     }
+
+    public void quitTheDriver(){
+        driver.quit();
+        driver = null;
+        instance = null;
+        System.out.println(" The Driver Was reset to null ,same as instance object");
+    }
 }
